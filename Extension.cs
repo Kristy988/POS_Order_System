@@ -9,18 +9,6 @@ namespace POS點餐機
 {
     internal static class Extension
     {
-
-        public static int CountingDigitalOfString(this string input, int number)
-        {
-            int count = 0;
-            foreach (var item in input)
-            {
-                if (Char.IsDigit(item))
-                    count++;
-            }
-
-            return count;
-        }
         public static void GenerateCheckbox(this FlowLayoutPanel flowLayoutPanel, string[] foodList, EventHandler checkedChange, EventHandler valueChange)
         {
             for (int i = 0; i < foodList.Length; i++)
