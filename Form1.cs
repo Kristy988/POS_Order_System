@@ -16,6 +16,7 @@ namespace POS點餐機
         public Form1()
         {
             InitializeComponent();
+
         }
 
         string[] foods = { "雞肉飯$70", "排骨飯$75", "雞腿飯$90", "糖醋小排飯$85", "宮保雞丁飯$80" };
@@ -24,14 +25,15 @@ namespace POS點餐機
         string[] sweets = { "草莓蛋糕$150", "原味鬆餅$120", "抹茶奶凍$60", "焦糖布丁$75", "草莓雪媚娘$60" };
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            OrderHandler.showPanelHander += ShowPanelHandler;
             flowLayoutPanel1.GenerateCheckbox(foods, Checkbox_CheckedChange, Numericupdown_ValueChange);
             flowLayoutPanel2.GenerateCheckbox(sides, Checkbox_CheckedChange, Numericupdown_ValueChange);
             flowLayoutPanel3.GenerateCheckbox(drinks, Checkbox_CheckedChange, Numericupdown_ValueChange);
             flowLayoutPanel4.GenerateCheckbox(sweets, Checkbox_CheckedChange, Numericupdown_ValueChange);
-            flowLayoutPanel5.Controls.Add(Order.Show());
+            flowLayoutPanel5.Controls.Add(ShowPanel.getFlow("品名", "數量", "單價", "小計", flowLayoutPanel5.Width));
 
         }
+
 
         private void Checkbox_CheckedChange(object sender, EventArgs e)
         {
@@ -49,8 +51,7 @@ namespace POS點餐機
 
             Item item = new Item(checkBox.Text.Split('$')[0], checkBox.Text.Split('$')[1], numericUpDown.Value.ToString());
             Order.Add(item);
-            flowLayoutPanel5.Controls.Clear();
-            flowLayoutPanel5.Controls.Add(Order.Show());
+
 
         }
 
@@ -61,5 +62,10 @@ namespace POS點餐機
             label1.Text = totalPrice.ToString();
         }
 
+        public void ShowPanelHandler(object sender, FlowLayoutPanel panel)
+        {
+            flowLayoutPanel5.Controls.Clear();
+            flowLayoutPanel5.Controls.Add(panel);
+        }
     }
 }
