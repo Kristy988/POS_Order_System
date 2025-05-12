@@ -23,8 +23,15 @@ namespace POS點餐機
             //飲料均一價30元
             //所有品項買二送一
             //所有品項打折95折
-            ADiscount getDiscount = DiscountFactory.GetDiscount(discountType, orders);
+
+
+            String discountTypeName = "POS點餐機.DiscountFolder." + discountType;
+            //設定
+            Type type = Type.GetType(discountTypeName); //找到類別
+            ADiscount getDiscount = (ADiscount)Activator.CreateInstance(type, new object[] { orders });
+            //new 出來 -->把它需要的東西傳進去 
             getDiscount.DiscountOrder();
+            //使用方法
             ShowPanel.Show(orders);
         }
     }
