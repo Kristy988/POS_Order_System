@@ -46,6 +46,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Discount.cs" />
+    <Compile Include="DiscountFolder\ADiscount.cs" />
+    <Compile Include="DiscountFolder\DiscountFactory.cs" />
+    <Compile Include="DiscountFolder\全場品項滿399打9折.cs" />
+    <Compile Include="DiscountFolder\宮保雞丁買三個打8折.cs" />
+    <Compile Include="DiscountFolder\所有品項打折95折.cs" />
+    <Compile Include="DiscountFolder\所有品項買二送一.cs" />
+    <Compile Include="DiscountFolder\排骨飯買三個210元.cs" />
+    <Compile Include="DiscountFolder\草莓蛋糕買三個送焦糖布丁.cs" />
+    <Compile Include="DiscountFolder\雞肉飯加鹽酥雞加烏龍奶茶加原味鬆餅折扣100.cs" />
+    <Compile Include="DiscountFolder\雞肉飯買二送一.cs" />
+    <Compile Include="DiscountFolder\雞腿飯加滷排骨150元.cs" />
+    <Compile Include="DiscountFolder\飲料任選五杯送一杯%28單價最低品項%29.cs" />
+    <Compile Include="DiscountFolder\飲料均一價30元.cs" />
     <Compile Include="Extension.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -84,5 +98,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

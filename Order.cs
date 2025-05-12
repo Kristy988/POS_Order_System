@@ -10,29 +10,34 @@ namespace POS點餐機
     internal class Order
     {
         public static List<Item> orders = new List<Item>();
-        public static void Add(Item item)
+        public static void Add(string discountType, Item item)
         {
 
             Item food = orders.FirstOrDefault(x => x.Name == item.Name);
             if (food == null)
             {
                 orders.Add(item);
-                ShowPanel.Show(orders);
             }
             else
             {
                 if (int.Parse(item.Count) != 0)
                 {
                     food.Count = item.Count;
-                    ShowPanel.Show(orders);
                 }
                 else
                 {
                     orders.Remove(food);
-                    ShowPanel.Show(orders);
                 }
 
             }
+
+            Discount.DiscountOrder(discountType, orders);
+
+        }
+
+        public static void RefreshOrder(string discountType)
+        {
+            Discount.DiscountOrder(discountType, orders);
 
         }
 

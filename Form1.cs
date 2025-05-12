@@ -30,7 +30,8 @@ namespace POS點餐機
             flowLayoutPanel2.GenerateCheckbox(sides, Checkbox_CheckedChange, Numericupdown_ValueChange);
             flowLayoutPanel3.GenerateCheckbox(drinks, Checkbox_CheckedChange, Numericupdown_ValueChange);
             flowLayoutPanel4.GenerateCheckbox(sweets, Checkbox_CheckedChange, Numericupdown_ValueChange);
-            flowLayoutPanel5.Controls.Add(ShowPanel.getFlow("品名", "數量", "單價", "小計", flowLayoutPanel5.Width));
+
+            comboBox1.SelectedIndex = 0;
 
         }
 
@@ -50,22 +51,32 @@ namespace POS點餐機
             checkBox.Checked = numericUpDown.Value > 0 ? true : false;
 
             Item item = new Item(checkBox.Text.Split('$')[0], checkBox.Text.Split('$')[1], numericUpDown.Value.ToString());
-            Order.Add(item);
+            Order.Add(comboBox1.SelectedItem.ToString(), item);
 
 
         }
 
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            int totalPrice = flowLayoutPanel1.CheckoutPrice() + flowLayoutPanel2.CheckoutPrice() + flowLayoutPanel3.CheckoutPrice() + flowLayoutPanel4.CheckoutPrice();
-            label1.Text = totalPrice.ToString();
-        }
+        //private void button1_Click(object sender, EventArgs e)
+        //{
+        //    label1.Text = ShowPanel.checkoutPrice.ToString();
+        //}
 
-        public void ShowPanelHandler(object sender, FlowLayoutPanel panel)
+        public void ShowPanelHandler(object sender, (FlowLayoutPanel, String) response)
         {
+            //(FlowLayoutPanel panel, string lab) = response;
+
             flowLayoutPanel5.Controls.Clear();
-            flowLayoutPanel5.Controls.Add(panel);
+            flowLayoutPanel5.Controls.Add(response.Item1);
+
+            label1.Text = response.Item2.ToString();
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string discountItem = comboBox1.SelectedItem.ToString();
+            Order.RefreshOrder(discountItem);
         }
     }
 }

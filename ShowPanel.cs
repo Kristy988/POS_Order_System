@@ -9,7 +9,6 @@ namespace POS點餐機
 {
     internal class ShowPanel
     {
-
         public static void Show(List<Item> orders)
         {
             FlowLayoutPanel flows = new FlowLayoutPanel();
@@ -25,7 +24,8 @@ namespace POS點餐機
                 flows.Controls.Add(flow);
             }
 
-            OrderHandler.NotifyShowPanel(flows);
+            string checkoutPrice = orders.Sum(x => int.Parse(x.SubTotal)).ToString();
+            OrderHandler.NotifyShowPanel((flows, checkoutPrice));
         }
 
         public static FlowLayoutPanel getFlow(string name, string count, string price, string total, int width)
@@ -36,7 +36,7 @@ namespace POS點餐機
             flow.Width = width;
             Label productName = new Label();
             productName.Height = 25;
-            productName.Width = 70;
+            productName.Width = 130;
             Label unitPrice = new Label();
             unitPrice.Height = 25;
             unitPrice.Width = 40;
