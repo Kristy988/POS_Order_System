@@ -26,7 +26,7 @@ namespace POS點餐機.DiscountFolder
                     itemName = orders[i].Name;
                 }
             }
-            if (buyQty / 3 > 0)
+            if (buyQty / 2 > 0)
             {
                 orders.Add(new Item($"(贈送){itemName}", "0", (buyQty / 3).ToString()));
             }
