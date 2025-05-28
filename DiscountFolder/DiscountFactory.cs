@@ -13,8 +13,8 @@ namespace POS點餐機.DiscountFolder
             ADiscount discount = null;
             switch (discountType)
             {
-                case "雞肉飯買二送一":
-                    discount = new 雞肉飯買二送一(orders);
+                case "排骨飯買二送一":
+                    discount = new 排骨飯買二送一(orders);
                     break;
                 case "排骨飯買三個210元":
                     discount = new 排骨飯買三個210元(orders);

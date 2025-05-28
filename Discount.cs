@@ -1,4 +1,5 @@
 ﻿using POS點餐機.DiscountFolder;
+using POS點餐機.DiscountStrategy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,13 +27,12 @@ namespace POS點餐機
 
 
             String discountTypeName = "POS點餐機.DiscountFolder." + discountType;
-            //設定
-            Type type = Type.GetType(discountTypeName); //找到類別
-            ADiscount getDiscount = (ADiscount)Activator.CreateInstance(type, new object[] { orders });
-            //new 出來 -->把它需要的東西傳進去 
-            getDiscount.DiscountOrder();
-            //使用方法
+            StrategyContext strategyContext = new StrategyContext(discountTypeName, orders);
+            strategyContext.ContextInterface();
             ShowPanel.Show(orders);
+
         }
+
+
     }
 }

@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace POS點餐機.DiscountFolder
 {
-    internal class 雞肉飯買二送一 : ADiscount
+    internal class 排骨飯買二送一 : ADiscount
     {
-        public 雞肉飯買二送一(List<Item> orders) : base(orders)
+        public 排骨飯買二送一(List<Item> orders) : base(orders)
         {
         }
 
         public override void DiscountOrder()
         {
-            Item food = orders.FirstOrDefault(x => x.Name == "雞肉飯");
+            Item food = orders.FirstOrDefault(x => x.Name == "排骨飯");
 
             if (food != null)
             {
                 int freeCount = int.Parse(food.Count) / 2;
                 if (freeCount > 0)
-                    orders.Add(new Item("(贈送)雞肉飯", "0", freeCount.ToString()));
+                    orders.Add(new Item("(贈送)排骨飯", "0", freeCount.ToString()));
             }
         }
     }
