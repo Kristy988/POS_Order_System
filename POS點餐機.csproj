@@ -33,7 +33,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -60,6 +64,12 @@
     <Compile Include="DiscountFolder\雞腿飯加滷排骨150元.cs" />
     <Compile Include="DiscountFolder\飲料任選五杯送一杯%28單價最低品項%29.cs" />
     <Compile Include="DiscountFolder\飲料均一價30元.cs" />
+    <Compile Include="DiscountStrategy\AStrategy.cs" />
+    <Compile Include="DiscountStrategy\Combo_Fixed_Price_Discount.cs" />
+    <Compile Include="DiscountStrategy\Combo_Free_Item.cs" />
+    <Compile Include="DiscountStrategy\Combo_Percentage_Discount.cs" />
+    <Compile Include="DiscountStrategy\IDAllocator.cs" />
+    <Compile Include="DiscountStrategy\Order_Total_Discount.cs" />
     <Compile Include="DiscountStrategy\StrategyContext.cs" />
     <Compile Include="Extension.cs" />
     <Compile Include="Form1.cs">
@@ -70,6 +80,7 @@
     </Compile>
     <Compile Include="IStrategy.cs" />
     <Compile Include="Item.cs" />
+    <Compile Include="MenuSpec.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="OrderHandler.cs" />
     <Compile Include="Program.cs" />
@@ -87,6 +98,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

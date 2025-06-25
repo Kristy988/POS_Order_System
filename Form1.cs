@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Channels;
 using System.Text;
@@ -19,20 +22,48 @@ namespace POS點餐機
 
         }
 
-        string[] foods = { "雞肉飯$70", "排骨飯$75", "雞腿飯$90", "糖醋小排飯$85", "宮保雞丁飯$80" };
-        string[] sides = { "鹽酥雞$60", "炸雞排$60", "滷排骨$70", "炸雞腿$80", "小黃瓜$40" };
-        string[] drinks = { "珍珠奶茶$65", "烏龍奶茶$55", "奶青$50", "紅茶$35", "烏龍茶$35" };
-        string[] sweets = { "草莓蛋糕$150", "原味鬆餅$120", "抹茶奶凍$60", "焦糖布丁$75", "草莓雪媚娘$60" };
         private void Form1_Load(object sender, EventArgs e)
         {
             OrderHandler.showPanelHander += ShowPanelHandler;
-            flowLayoutPanel1.GenerateCheckbox(foods, Checkbox_CheckedChange, Numericupdown_ValueChange);
-            flowLayoutPanel2.GenerateCheckbox(sides, Checkbox_CheckedChange, Numericupdown_ValueChange);
-            flowLayoutPanel3.GenerateCheckbox(drinks, Checkbox_CheckedChange, Numericupdown_ValueChange);
-            flowLayoutPanel4.GenerateCheckbox(sweets, Checkbox_CheckedChange, Numericupdown_ValueChange);
+            string menuPath = ConfigurationManager.AppSettings["MenuPath"];
+            string menuContent = File.ReadAllText(menuPath);
+            //物件轉json字串 => 序列化 Serialize
+            //json字串 轉物件 => 反序列化 DeSerialize
+            MenuSpec menuSpec = JsonConvert.DeserializeObject<MenuSpec>(menuContent);
+            MenuSpec.Menu[] menus = menuSpec.Menus;
+            for (int i = 0; i < menus.Length; i++)
+            {
+                Label label = new Label();
+                FlowLayoutPanel flow = new FlowLayoutPanel();
+                label.Text = menus[i].Title;
+                flow.Controls.Add(label);
+                flow.Width = 200;
+                flow.Height = 300;
+                for (int j = 0; j < menus[i].Foods.Length; j++)
+                {
+                    FlowLayoutPanel foodFlow = new FlowLayoutPanel();
+                    foodFlow.Width = 200;
+                    foodFlow.Height = 30;
+                    CheckBox productName = new CheckBox();
+                    productName.CheckedChanged += Checkbox_CheckedChange;
+                    productName.Width = 130;
+                    productName.Height = 25;
+                    NumericUpDown numericUpDown = new NumericUpDown();
+                    numericUpDown.Width = 40;
+                    numericUpDown.ValueChanged += Numericupdown_ValueChange;
+                    productName.Tag = numericUpDown;
+                    numericUpDown.Tag = productName;
+                    productName.Text = menus[i].Foods[j].Name + "$" + menus[i].Foods[j].Price;
+                    foodFlow.Controls.Add(productName);
+                    foodFlow.Controls.Add(numericUpDown);
+                    flow.Controls.Add(foodFlow);
+                }
+                MenuContainer.Controls.Add(flow);
 
-            comboBox1.SelectedIndex = 0;
+            }
 
+            comboBox1.DataSource = menuSpec.Discounts;
+            comboBox1.DisplayMember = "Name";
         }
 
 
@@ -49,9 +80,8 @@ namespace POS點餐機
             NumericUpDown numericUpDown = (NumericUpDown)sender;
             CheckBox checkBox = (CheckBox)numericUpDown.Tag;
             checkBox.Checked = numericUpDown.Value > 0 ? true : false;
-
             Item item = new Item(checkBox.Text.Split('$')[0], checkBox.Text.Split('$')[1], numericUpDown.Value.ToString());
-            Order.Add(comboBox1.SelectedItem.ToString(), item);
+            Order.Add((MenuSpec.Discount)comboBox1.SelectedValue, item);
 
 
         }
@@ -75,7 +105,7 @@ namespace POS點餐機
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string discountItem = comboBox1.SelectedItem.ToString();
+            MenuSpec.Discount discountItem = (MenuSpec.Discount)comboBox1.SelectedValue;
             Order.RefreshOrder(discountItem);
         }
     }

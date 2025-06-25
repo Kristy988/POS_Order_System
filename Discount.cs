@@ -10,7 +10,7 @@ namespace POS點餐機
 {
     internal class Discount
     {
-        public static void DiscountOrder(string discountType, List<Item> orders)
+        public static void DiscountOrder(MenuSpec.Discount discountType, List<Item> orders)
         {
             orders.RemoveAll(x => x.Name.Contains("贈送") || x.Name.Contains("折扣"));
             //雞肉飯買二送一
@@ -26,8 +26,8 @@ namespace POS點餐機
             //所有品項打折95折
 
 
-            String discountTypeName = "POS點餐機.DiscountFolder." + discountType;
-            StrategyContext strategyContext = new StrategyContext(discountTypeName, orders);
+            //String discountTypeName = "POS點餐機.DiscountFolder." + discountType;
+            StrategyContext strategyContext = new StrategyContext(discountType, orders);
             strategyContext.ContextInterface();
             ShowPanel.Show(orders);
 

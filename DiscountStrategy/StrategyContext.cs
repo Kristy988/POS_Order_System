@@ -9,18 +9,16 @@ namespace POS點餐機.DiscountStrategy
 {
     internal class StrategyContext
     {
-        ADiscount ADiscount;
-        Type type;
-        ADiscount getDiscount;
-        public StrategyContext(String discountTypeName, List<Item> orders)
+        AStrategy AStrategy;
+        public StrategyContext(MenuSpec.Discount discountType, List<Item> orders)
         {
-            type = Type.GetType(discountTypeName); //找到類別
-            ADiscount = (ADiscount)Activator.CreateInstance(type, new object[] { orders });
+            Type type = Type.GetType(discountType.Strategy); //找到類別
+            AStrategy = (AStrategy)Activator.CreateInstance(type, new object[] { discountType, orders });
 
         }
         public void ContextInterface()
         {
-            ADiscount.DiscountOrder();
+            AStrategy.DiscountSrategy();
         }
     }
 }
