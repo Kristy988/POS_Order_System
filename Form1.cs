@@ -31,6 +31,19 @@ namespace POS點餐機
             //json字串 轉物件 => 反序列化 DeSerialize
             MenuSpec menuSpec = JsonConvert.DeserializeObject<MenuSpec>(menuContent);
             MenuSpec.Menu[] menus = menuSpec.Menus;
+
+
+            //var temp = menus.GroupBy(x => x.Title).Select(x => new
+            //{
+            //    Title = x.Key,
+            //    TotalPrice = x.Sum(y => y.Foods.Sum(z => int.Parse(z.Price)))
+            //}).ToList();
+
+
+
+
+
+
             for (int i = 0; i < menus.Length; i++)
             {
                 Label label = new Label();

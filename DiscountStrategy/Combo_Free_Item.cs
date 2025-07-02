@@ -22,12 +22,13 @@ namespace POS點餐機.DiscountStrategy
 
     class AwardMapping
     {
-        // condition ID; order count; order name; condition count 
         public int AwardID { get; set; }
-        //public String OrderName { get; set; }
+        public int OrderPrice { get; set; }
 
-        //public int OrderQty { get; set; }
+        public string AwardName { get; set; }
+        public string OrderName { get; set; }
         public int AwardQty { get; set; }
+        public string AwardType { get; set; }
 
     }
 
@@ -40,136 +41,176 @@ namespace POS點餐機.DiscountStrategy
 
         public override void DiscountSrategy()
         {
-            Condition[] conditions = discount.Conditions;
-            Award[] awards = discount.Awards;
-            Dictionary<int, List<ConditionMapping>> mappingDict = new Dictionary<int, List<ConditionMapping>>();
-            int minFreeCount = int.MaxValue;
-            // 將購買的每一個品項歸屬到對應的Condition中
-            for (int i = 0; i < orders.Count; i++)
+            //select (將每一筆資料 轉換成另一種資料類型)
+            //查詢所購買的品名
+            //List<string> names = orders.Select(x =>
+            //{
+            //    if (x.Name.Contains("奶") && int.Parse(x.Price) > 50)
+            //        return x.Name;
+            //    else
+            //    {
+            //        return "";
+            //    }
+
+            //}).Where(x => x != "").ToList();
+
+            //List<string> names = orders.Where(x =>
+            //{
+            //    if (x.Name.Contains("奶") && int.Parse(x.Price) > 50)
+            //        return true;
+            //    else
+            //    {
+            //        return false;
+            //    }
+
+            //}).Select(x => x.Name).ToList();
+
+            // 匿名類別 => 創建一個臨時的類別來儲存資料
+            //var list = orders.Select((x, index) => new
+            //{
+            //    ProductName = x.Name,
+            //    x.Count,
+            //    NumberID = index
+            //}).ToList();
+
+
+            //selectMany
+
+            //List<List<int>> numbers = new List<List<int>>()
+            //{
+            //    new List<int> { 1,2,3 },
+            //    new List<int> { 4,5,6 },
+            //    new List<int> { 7,8,9 },
+            //};
+
+            //var result = numbers.SelectMany(x => x).ToList();
+
+
+            //group by => 資料群組 用來計算各類數值(max min sum count avg,聚合函數)
+
+
+
+
+
+
+
+
+            //1.需要先將Conditions內的每一筆condition 都給予一個 conditionID 作為群組編號
+            var temp_conditions = discount.Conditions.SelectMany((x, index) => x.Item.Split(',').Select((y) => new
             {
-                for (int j = 0; j < conditions.Length; j++)
-                {
-                    string[] tempNames = conditions[j].Item.Split(',');
-                    for (int k = 0; k < tempNames.Length; k++)
-                    {
-                        if (tempNames[k] == orders[i].Name)
-                        {
-                            ConditionMapping conditionMapping = new ConditionMapping();
-                            conditionMapping.ConditionID = j;
-                            conditionMapping.ConditionQty = conditions[j].Count;
-                            conditionMapping.OrderQty = int.Parse(orders[i].Count);
-                            conditionMapping.OrderName = orders[i].Name;
-                            conditionMapping.OrderPrice = int.Parse(orders[i].Price);
+                ConditionID = index,
+                ConditionQty = x.Count,
+                ProductNames = y
 
-                            if (!mappingDict.ContainsKey(j))
-                            {
-                                mappingDict.Add(j, new List<ConditionMapping>() { conditionMapping });
-                            }
-                            else
-                            {
-                                mappingDict[j].Add(conditionMapping);
-                            }
+            })).ToList();
 
-                        }
-                    }
-                }
-            }
+            //2.將items(購買的) 的每一個品項去掃描每一個conditions下的array(split過後的)
+            //去檢查該品項是否隸屬 / 隸屬於某一個某一個condition group
 
+            var checkConditionStatus = orders.Select(x =>
+            {
+                var mapping = temp_conditions.FirstOrDefault(condition => condition.ProductNames.Contains(x.Name));
+                if (mapping == null)
+                    return null;
+                return new ConditionMapping { ConditionID = mapping.ConditionID, OrderName = x.Name, OrderQty = int.Parse(x.Count), ConditionQty = mapping.ConditionQty, OrderPrice = int.Parse(x.Price) };
+            }).Where(x => x != null).ToList();
 
-            // 檢查每一個的ConditionGroup的條件是否與ConditionQty的數量一致
-            if (mappingDict.Count != discount.Conditions.Length)
+            //3.將符合條件的item項目 歸屬到指定的 condition group(這包就是要自己創建List)
+            //4.將List下的每一個condition進行數量加總
+            var conditionGroup = checkConditionStatus.GroupBy(x => new { x.ConditionID, x.ConditionQty }).Select(x => new
+            {
+
+                TotalQty = x.Sum(y => y.OrderQty),
+                RequiredQty = x.Key.ConditionQty,
+
+            }).Where(x => (x.TotalQty / x.RequiredQty) > 0).ToList();
+
+            //5.比對每一群組的數量 跟原本的conditions count 是否一致
+            if (conditionGroup.Count != discount.Conditions.Length)
                 return;
 
-            for (int i = 0; i < mappingDict.Count; i++)
+
+            int freeCount = conditionGroup.Min(x => x.TotalQty / x.RequiredQty);
+
+
+
+
+
+            //Award[] awards = discount.Awards;
+            var temp_Awards = discount.Awards.SelectMany((x, index) => x.Item.Split(',').Select(y => new
             {
-                int qtyRequired = 0;
-                int qty = 0;
-                for (int j = 0; j < mappingDict[i].Count; j++)
-                {
-                    qtyRequired = mappingDict[i][j].ConditionQty;
-                    qty += mappingDict[i][j].OrderQty;
-                }
+                AwardProduct = y,
+                AwardType = x.AwardType,
+                AwardQty = x.Count,
+                AwardID = index
 
-                if (qty < qtyRequired)
-                {
-                    return;
-                }
-                int freeCount = qty / qtyRequired;
-                if (freeCount < minFreeCount)
-                {
-                    minFreeCount = freeCount;
-                }
+            })).ToList();
 
-            }
 
-            if (minFreeCount == 0 || minFreeCount == int.MaxValue)
+            var checkingAwards = checkConditionStatus.Select(x =>
             {
-                return;
-            }
 
-            //Dictionary<int, List<ConditionMapping>> mappingAwardDict = new Dictionary<int, List<ConditionMapping>>();
-            string awardItem = "";
-            int minPrice = int.MaxValue;
-            int maxPrice = int.MinValue;
-            List<string> awardItems = new List<string>();
 
-            for (int i = 0; i < awards.Length; i++)
-            {
-                string[] tempNames = awards[i].Item.Split(',');
+                var mapping = temp_Awards.FirstOrDefault(TypeChecking => TypeChecking.AwardType != null);
 
-                for (int j = 0; j < mappingDict.Count; j++)
+                if (mapping != null)
                 {
-                    int price = 0;
-                    for (int k = 0; k < mappingDict[i].Count; k++)
+                    var mapping3 = temp_Awards.FirstOrDefault(typeChecking => typeChecking.AwardType == "AnyMin");
+                    if (mapping3 != null)
                     {
-                        price = mappingDict[j][k].OrderPrice;
-                        for (int q = 0; q < tempNames.Length; q++)
-                        {
-                            if (tempNames[q] == mappingDict[j][k].OrderName)
-                            {
-                                awardItems.Add(tempNames[i]);
-                                if (awards[i].AwardType == "Min")
-                                {
-                                    if (price < minPrice)
-                                    {
-                                        minPrice = price;
-                                        awardItem = mappingDict[j][k].OrderName;
-                                    }
-                                }
-                                else if (awards[i].AwardType == "Max")
-                                {
-                                    if (price > maxPrice)
-                                    {
-                                        maxPrice = price;
-                                        awardItem = mappingDict[j][k].OrderName;
-                                    }
-                                }
-                                else if (awards[i].AwardType == "Random")
-                                {
-                                    Random random = new Random(Guid.NewGuid().GetHashCode());
-                                    int randomAward = random.Next(0, awardItems.Count + 1);
-                                    awardItem = awardItems[randomAward];
-                                }
-                            }
-                        }
-
+                        return new AwardMapping { AwardID = mapping3.AwardID, OrderName = x.OrderName, AwardType = String.IsNullOrEmpty(mapping3.AwardType) ? "Normal" : mapping3.AwardType, OrderPrice = x.OrderPrice, AwardQty = mapping3.AwardQty, AwardName = mapping3.AwardProduct };
                     }
-
+                    var mapping2 = temp_Awards.FirstOrDefault(OrderContain => OrderContain.AwardProduct.Contains(x.OrderName));
+                    return new AwardMapping { AwardID = mapping2.AwardID, OrderName = x.OrderName, AwardType = String.IsNullOrEmpty(mapping2.AwardType) ? "Normal" : mapping2.AwardType, OrderPrice = x.OrderPrice, AwardQty = mapping2.AwardQty, AwardName = mapping2.AwardProduct };
                 }
 
-            }
+                return new AwardMapping { AwardID = mapping.AwardID, OrderName = x.OrderName, AwardType = String.IsNullOrEmpty(mapping.AwardType) ? "Normal" : mapping.AwardType, OrderPrice = x.OrderPrice, AwardQty = mapping.AwardQty, AwardName = mapping.AwardProduct };
+
+            }).Where(x => x != null).ToList();
 
 
-
-
-
-
-            for (int i = 0; i < discount.Awards.Length; i++)
+            var allocatingAwards = checkingAwards.GroupBy(x => new { x.AwardID, x.AwardType }).Select(x =>
             {
-                int addFreeCount = discount.Awards[i].Count * minFreeCount;
-                orders.Add(new Item("(贈送)" + discount.Awards[i].Item, "0", addFreeCount.ToString()));
+                if (x.Key.AwardType == "Normal")
+                {
+                    var AwardItem = x.First();
+                    return new AwardMapping { AwardQty = AwardItem.AwardQty, AwardName = AwardItem.AwardName };
+                }
+                if (x.Key.AwardType == "Min")
+                {
+                    var AwardItemPrice = x.Min(y => y.OrderPrice);
+                    var AwardItem = x.FirstOrDefault(ItemFinding => ItemFinding.OrderPrice == AwardItemPrice);
+                    return new AwardMapping { AwardQty = AwardItem.AwardQty, AwardName = AwardItem.AwardName };
+                }
+                if (x.Key.AwardType == "Max")
+                {
+                    var AwardItemPrice = x.Max(y => y.OrderPrice);
+                    var AwardItem = x.FirstOrDefault(ItemFinding => ItemFinding.OrderPrice == AwardItemPrice);
+                    return new AwardMapping { AwardQty = AwardItem.AwardQty, AwardName = AwardItem.AwardName };
+                }
+                if (x.Key.AwardType == "Random")
+                {
+                    var AwardItem = x.OrderByDescending(y => Guid.NewGuid().GetHashCode()).First();
+                    return new AwardMapping { AwardQty = AwardItem.AwardQty, AwardName = AwardItem.AwardName };
+                }
+                if (x.Key.AwardType == "AnyMin")
+                {
+                    var AwardItemPrice = x.Min(y => y.OrderPrice);
+                    var AwardItem = x.FirstOrDefault(ItemFinding => ItemFinding.OrderPrice == AwardItemPrice);
+                    return new AwardMapping { AwardQty = AwardItem.AwardQty, AwardName = AwardItem.AwardName };
+                }
+                else
+                    return null;
+            }).Where(x => x != null).ToList();
 
-            }
+            var addOrder = allocatingAwards.Select(x =>
+            {
+                var addFreeCount = x.AwardQty * freeCount;
+                return new Item("(贈送)" + x.AwardName, "0", addFreeCount.ToString());
+
+            }).ToList();
+
+            orders.AddRange(addOrder);
 
 
         }

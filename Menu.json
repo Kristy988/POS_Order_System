@@ -124,7 +124,7 @@
 
         },
         {
-            "Name":"所有飲料任選三杯送(奶茶類)一杯(單價最低品項)",
+            "Name":"任選三杯飲料送奶茶類(單價最低品項)一杯",
             "Strategy": "POS點餐機.DiscountStrategy.Combo_Free_Item",
             "Conditions":[
                 {
@@ -136,7 +136,7 @@
             "Awards":[
                 {
                     "Item":"珍珠奶茶,烏龍奶茶,奶青",
-                    "AwardType":"Min",
+                    "AwardType":"AnyMin",
                     "Count":1,
                     "DisPrice":0,
                     "Off":0
