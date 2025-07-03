@@ -37,43 +37,45 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(1005, 688);
+            this.label1.Location = new System.Drawing.Point(1146, 750);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(14, 16);
+            this.label1.Size = new System.Drawing.Size(16, 18);
             this.label1.TabIndex = 2;
             this.label1.Text = "0";
             // 
             // flowLayoutPanel5
             // 
             this.flowLayoutPanel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.flowLayoutPanel5.Location = new System.Drawing.Point(658, 43);
+            this.flowLayoutPanel5.Location = new System.Drawing.Point(740, 48);
             this.flowLayoutPanel5.Margin = new System.Windows.Forms.Padding(4);
             this.flowLayoutPanel5.Name = "flowLayoutPanel5";
-            this.flowLayoutPanel5.Size = new System.Drawing.Size(375, 621);
+            this.flowLayoutPanel5.Size = new System.Drawing.Size(422, 607);
             this.flowLayoutPanel5.TabIndex = 9;
             // 
             // comboBox1
             // 
+            this.comboBox1.Font = new System.Drawing.Font("新細明體", 12F);
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(658, 680);
+            this.comboBox1.Location = new System.Drawing.Point(740, 685);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(287, 24);
+            this.comboBox1.Size = new System.Drawing.Size(422, 32);
             this.comboBox1.TabIndex = 10;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // MenuContainer
             // 
-            this.MenuContainer.Location = new System.Drawing.Point(35, 43);
+            this.MenuContainer.Location = new System.Drawing.Point(39, 48);
             this.MenuContainer.Name = "MenuContainer";
-            this.MenuContainer.Size = new System.Drawing.Size(578, 660);
+            this.MenuContainer.Size = new System.Drawing.Size(650, 742);
             this.MenuContainer.TabIndex = 11;
+            this.MenuContainer.Paint += new System.Windows.Forms.PaintEventHandler(this.MenuContainer_Paint);
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1067, 768);
+            this.ClientSize = new System.Drawing.Size(1200, 864);
             this.Controls.Add(this.MenuContainer);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.flowLayoutPanel5);

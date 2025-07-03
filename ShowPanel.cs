@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,8 +13,8 @@ namespace POS點餐機
         public static void Show(List<Item> orders)
         {
             FlowLayoutPanel flows = new FlowLayoutPanel();
-            flows.Height = 621;
-            flows.Width = 323;
+            flows.Height = 698;
+            flows.Width = 422;
 
             FlowLayoutPanel flow = getFlow("品名", "數量", "單價", "小計", flows.Width);
             flows.Controls.Add(flow);
@@ -31,21 +32,26 @@ namespace POS點餐機
         public static FlowLayoutPanel getFlow(string name, string count, string price, string total, int width)
         {
             FlowLayoutPanel flow = new FlowLayoutPanel();
-            flow.BorderStyle = BorderStyle.FixedSingle;
-            flow.Height = 25;
+            flow.Height = 35;
             flow.Width = width;
             Label productName = new Label();
-            productName.Height = 25;
-            productName.Width = 130;
+            productName.Height = 35;
+            productName.Width = 180;
+            productName.Font = new Font("微軟正黑體", 12f);
             Label unitPrice = new Label();
-            unitPrice.Height = 25;
-            unitPrice.Width = 40;
+            unitPrice.Height = 35;
+            unitPrice.Width = 65;
+            unitPrice.Font = new Font("微軟正黑體", 12f);
             Label productCount = new Label();
-            productCount.Height = 25;
-            productCount.Width = 40;
+            productCount.Height = 35;
+            productCount.Width = 65;
+            productCount.Font = new Font("微軟正黑體", 12f);
+
             Label totalPrice = new Label();
             totalPrice.Height = 25;
-            totalPrice.Width = 40;
+            totalPrice.Width = 65;
+            totalPrice.Font = new Font("微軟正黑體", 12f);
+
             productName.Text = name;
             unitPrice.Text = price;
             productCount.Text = count;

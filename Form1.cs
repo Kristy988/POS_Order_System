@@ -25,12 +25,7 @@ namespace POS點餐機
         private void Form1_Load(object sender, EventArgs e)
         {
             OrderHandler.showPanelHander += ShowPanelHandler;
-            string menuPath = ConfigurationManager.AppSettings["MenuPath"];
-            string menuContent = File.ReadAllText(menuPath);
-            //物件轉json字串 => 序列化 Serialize
-            //json字串 轉物件 => 反序列化 DeSerialize
-            MenuSpec menuSpec = JsonConvert.DeserializeObject<MenuSpec>(menuContent);
-            MenuSpec.Menu[] menus = menuSpec.Menus;
+            MenuSpec.Menu[] menus = AppData.Menus;
 
 
             //var temp = menus.GroupBy(x => x.Title).Select(x => new
@@ -50,19 +45,21 @@ namespace POS點餐機
                 FlowLayoutPanel flow = new FlowLayoutPanel();
                 label.Text = menus[i].Title;
                 flow.Controls.Add(label);
-                flow.Width = 200;
-                flow.Height = 300;
+                flow.Width = MenuContainer.Width/2-30;
+                flow.Height = MenuContainer.Height / 2 - 15;
+
                 for (int j = 0; j < menus[i].Foods.Length; j++)
                 {
                     FlowLayoutPanel foodFlow = new FlowLayoutPanel();
-                    foodFlow.Width = 200;
-                    foodFlow.Height = 30;
+                    foodFlow.Width = flow.Width;
+                    foodFlow.Height = 50;
                     CheckBox productName = new CheckBox();
+                    productName.Font = new Font("微軟正黑體", 12f);
                     productName.CheckedChanged += Checkbox_CheckedChange;
-                    productName.Width = 130;
-                    productName.Height = 25;
+                    productName.Width = foodFlow.Width / 2 + 60;
+                    productName.Height = 35;
                     NumericUpDown numericUpDown = new NumericUpDown();
-                    numericUpDown.Width = 40;
+                    numericUpDown.Width = foodFlow.Width/5;
                     numericUpDown.ValueChanged += Numericupdown_ValueChange;
                     productName.Tag = numericUpDown;
                     numericUpDown.Tag = productName;
@@ -75,7 +72,7 @@ namespace POS點餐機
 
             }
 
-            comboBox1.DataSource = menuSpec.Discounts;
+            comboBox1.DataSource = AppData.Discounts;
             comboBox1.DisplayMember = "Name";
         }
 
@@ -120,6 +117,11 @@ namespace POS點餐機
         {
             MenuSpec.Discount discountItem = (MenuSpec.Discount)comboBox1.SelectedValue;
             Order.RefreshOrder(discountItem);
+        }
+
+        private void MenuContainer_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

@@ -115,7 +115,7 @@
             "Awards":[
                 {
                     "Item":"雞肉飯",
-                    "AwardType":"",
+                    "AwardType":"AnyMin",
                     "Count":1,
                     "DisPrice":0,
                     "Off":0
@@ -246,7 +246,7 @@
             "Awards":[
                 {
                     "Item":"焦糖布丁",
-                    "AwardType":"",
+                    "AwardType":"AnyMin",
                     "Count":1,
                     "DisPrice":0,
                     "Off":0
@@ -272,14 +272,14 @@
             "Awards":[
                 {
                     "Item":"草莓雪媚娘",
-                    "AwardType":"",
+                    "AwardType":"AnyMin",
                     "Count":3,
                     "DisPrice":0,
                     "Off":0
                 },
                 {
                     "Item":"草莓蛋糕",
-                    "AwardType":"",
+                    "AwardType":"AnyMin",
                     "Count":2,
                     "DisPrice":0,
                     "Off":0
