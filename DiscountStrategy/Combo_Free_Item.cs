@@ -18,14 +18,19 @@ namespace POS點餐機.DiscountStrategy
         public int OrderQty { get; set; }
         public int ConditionQty { get; set; }
         public int OrderPrice { get; set; }
+
+        public int ConditionMinPrice { get; set; }
     }
 
     class AwardMapping
     {
         public int AwardID { get; set; }
+        public int SetPrice { get; set; }
         public string AwardName { get; set; }
         public int AwardQty { get; set; }
         public string AwardType { get; set; }
+        public int AwardDisPrice { get; set; }
+        public float AwardOff { get; set; }
 
     }
 
@@ -140,47 +145,47 @@ namespace POS點餐機.DiscountStrategy
             })).ToList();
 
             // AnyMin Min Max Random
-              var allocatingAwards = temp_Awards.GroupBy(x => new { x.AwardID, x.AwardType }).Select(x =>
-            {
-                if (x.Key.AwardType == "AnyMin")
-                {
-                    var AwardItem = x.OrderBy(y => AppData.Products[y.AwardProduct]).First();
-                    return new AwardMapping { AwardQty = AwardItem.AwardQty, AwardName = AwardItem.AwardProduct };
-                }
-                if (x.Key.AwardType == "Min")
-                {
-                    var AwardItem = x.OrderBy(y =>
-                    {
-                        if (!orders.Any(order => order.Name == y.AwardProduct))
-                            return int.MaxValue;
-                        return AppData.Products[y.AwardProduct];
-                    }).First();
-                    return new AwardMapping { AwardQty = AwardItem.AwardQty , AwardName = AwardItem.AwardProduct };
-                }
-                if (x.Key.AwardType == "Max")
-                {
-                    var AwardItem = x.OrderByDescending(y =>
-                    {
-                        if (!orders.Any(order => order.Name == y.AwardProduct))
-                            return int.MinValue;
-                        return AppData.Products[y.AwardProduct];
-                    }).First(); 
-                    return new AwardMapping { AwardQty = AwardItem.AwardQty, AwardName = AwardItem.AwardProduct };
-                }
-                if (x.Key.AwardType == "Random")
-                {
-                    var AwardItem = x.OrderBy(y =>
-                    {
-                        if (!orders.Any(order => order.Name == y.AwardProduct))
-                            return int.MaxValue;
-                        return Guid.NewGuid().GetHashCode();
-                    }).First();
-                    return new AwardMapping { AwardQty = AwardItem.AwardQty, AwardName = AwardItem.AwardProduct };
-                }
-               
-                else
-                    return null;
-            }).Where(x => x != null).ToList();
+            var allocatingAwards = temp_Awards.GroupBy(x => new { x.AwardID, x.AwardType }).Select(x =>
+          {
+              if (x.Key.AwardType == "AnyMin")
+              {
+                  var AwardItem = x.OrderBy(y => AppData.Products[y.AwardProduct]).First();
+                  return new AwardMapping { AwardQty = AwardItem.AwardQty, AwardName = AwardItem.AwardProduct };
+              }
+              if (x.Key.AwardType == "Min")
+              {
+                  var AwardItem = x.OrderBy(y =>
+                  {
+                      if (!orders.Any(order => order.Name == y.AwardProduct))
+                          return int.MaxValue;
+                      return AppData.Products[y.AwardProduct];
+                  }).First();
+                  return new AwardMapping { AwardQty = AwardItem.AwardQty, AwardName = AwardItem.AwardProduct };
+              }
+              if (x.Key.AwardType == "Max")
+              {
+                  var AwardItem = x.OrderByDescending(y =>
+                  {
+                      if (!orders.Any(order => order.Name == y.AwardProduct))
+                          return int.MinValue;
+                      return AppData.Products[y.AwardProduct];
+                  }).First();
+                  return new AwardMapping { AwardQty = AwardItem.AwardQty, AwardName = AwardItem.AwardProduct };
+              }
+              if (x.Key.AwardType == "Random")
+              {
+                  var AwardItem = x.OrderBy(y =>
+                  {
+                      if (!orders.Any(order => order.Name == y.AwardProduct))
+                          return int.MaxValue;
+                      return Guid.NewGuid().GetHashCode();
+                  }).First();
+                  return new AwardMapping { AwardQty = AwardItem.AwardQty, AwardName = AwardItem.AwardProduct };
+              }
+
+              else
+                  return null;
+          }).Where(x => x != null).ToList();
 
             var addOrder = allocatingAwards.Select(x =>
             {

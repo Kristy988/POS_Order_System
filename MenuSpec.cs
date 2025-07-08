@@ -41,6 +41,7 @@ namespace POS點餐機
         public class Award
         {
             public string Item { get; set; }
+            public int SetPrice { get; set; }
             public string AwardType { get; set; }
             public int Count { get; set; }
             public int DisPrice { get; set; }

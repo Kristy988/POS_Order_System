@@ -115,6 +115,7 @@
             "Awards":[
                 {
                     "Item":"雞肉飯",
+                    "SetPrice":0,
                     "AwardType":"AnyMin",
                     "Count":1,
                     "DisPrice":0,
@@ -136,6 +137,7 @@
             "Awards":[
                 {
                     "Item":"珍珠奶茶,烏龍奶茶,奶青",
+                    "SetPrice":0,
                     "AwardType":"AnyMin",
                     "Count":1,
                     "DisPrice":0,
@@ -162,6 +164,7 @@
             "Awards":[
                 {
                     "Item":"珍珠奶茶,烏龍奶茶,奶青,紅茶,烏龍茶",
+                    "SetPrice":0,
                     "AwardType":"Min",
                     "Count":1,
                     "DisPrice":0,
@@ -183,6 +186,7 @@
             "Awards":[
                 {
                     "Item":"珍珠奶茶,烏龍奶茶,奶青,紅茶,烏龍茶",
+                    "SetPrice":0,
                     "AwardType":"Min",
                     "Count":1,
                     "DisPrice":0,
@@ -204,6 +208,7 @@
             "Awards":[
                 {
                     "Item":"珍珠奶茶,烏龍奶茶,奶青,紅茶,烏龍茶",
+                    "SetPrice":0,
                     "AwardType":"Max",
                     "Count":1,
                     "DisPrice":0,
@@ -225,6 +230,7 @@
             "Awards":[
                 {
                     "Item":"珍珠奶茶,烏龍奶茶,奶青,紅茶,烏龍茶",
+                    "SetPrice":0,
                     "AwardType":"Random",
                     "Count":1,
                     "DisPrice":0,
@@ -246,6 +252,7 @@
             "Awards":[
                 {
                     "Item":"焦糖布丁",
+                    "SetPrice":0,
                     "AwardType":"AnyMin",
                     "Count":1,
                     "DisPrice":0,
@@ -272,6 +279,7 @@
             "Awards":[
                 {
                     "Item":"草莓雪媚娘",
+                    "SetPrice":0,
                     "AwardType":"AnyMin",
                     "Count":3,
                     "DisPrice":0,
@@ -300,8 +308,9 @@
             "Awards":[
                 {
                     "Item":"",
+                    "SetPrice":0,
                     "AwardType":"",
-                    "Count":0,
+                    "Count":1,
                     "DisPrice":-15,
                     "Off":0
                 }
@@ -326,8 +335,9 @@
             "Awards":[
                 {
                     "Item":"",
+                    "SetPrice":0,
                     "AwardType":"",
-                    "Count":0,
+                    "Count":1,
                     "DisPrice":-10,
                     "Off":0
                 }
@@ -362,13 +372,40 @@
             "Awards":[
                 {
                     "Item":"",
+                    "SetPrice":0,
                     "AwardType":"",
-                    "Count":0,
+                    "Count":1,
                     "DisPrice":-100,
                     "Off":0
                 }
             ]
 
+        },
+        {
+            "Name":"任選主餐1份搭配飲料任選兩杯135元",
+            "Strategy": "POS點餐機.DiscountStrategy.Combo_Fixed_Price_Discount",
+            "Conditions":[
+                {
+                    "Item": "珍珠奶茶,烏龍奶茶,奶青,紅茶,烏龍茶",
+                    "Count": 2,
+                    "MinPrice":0
+                },
+                {
+                    "Item": "雞肉飯,排骨飯,雞腿飯,糖醋小排飯,宮保雞丁飯",
+                    "Count": 1,
+                    "MinPrice":0
+                }
+            ],
+            "Awards":[
+                {
+                    "Item":"",
+                    "SetPrice":135,
+                    "AwardType":"",
+                    "Count":1,
+                    "DisPrice":0,
+                    "Off":0
+                }
+            ]
         },
         {
             "Name":"指定飲料均一價30元",
@@ -382,9 +419,10 @@
             ],
             "Awards":[
                 {
-                    "Item":"",
+                    "Item":"珍珠奶茶,烏龍奶茶,奶青,紅茶,烏龍茶",
+                    "SetPrice":0,
                     "AwardType":"SamePrice",
-                    "Count":0,
+                    "Count":1,
                     "DisPrice":30,
                     "Off":0
                 }
@@ -402,9 +440,10 @@
             ],
             "Awards":[
                 {
-                    "Item":"",
+                    "Item":"珍珠奶茶,烏龍奶茶,奶青",
+                    "SetPrice":0,
                     "AwardType":"SamePrice",
-                    "Count":0,
+                    "Count":1,
                     "DisPrice":30,
                     "Off":0
                 }
@@ -423,8 +462,9 @@
             "Awards":[
                 {
                     "Item":"小黃瓜",
+                    "SetPrice":0,
                     "AwardType":"",
-                    "Count":0,
+                    "Count":1,
                     "DisPrice":-30,
                     "Off":0
                 }
@@ -435,7 +475,7 @@
             "Strategy": "POS點餐機.DiscountStrategy.Combo_Percentage_Discount",
             "Conditions":[
                 {
-                    "Item": "宮保雞丁",
+                    "Item": "宮保雞丁飯",
                     "Count": 3,
                     "MinPrice":0
                 }
@@ -443,6 +483,7 @@
             "Awards":[
                 {
                     "Item":"",
+                    "SetPrice":0,
                     "AwardType":"",
                     "Count":0,
                     "DisPrice":0,
@@ -456,7 +497,7 @@
             "Strategy": "POS點餐機.DiscountStrategy.Combo_Percentage_Discount",
             "Conditions":[
                 {
-                    "Item": "宮保雞丁",
+                    "Item": "宮保雞丁飯",
                     "Count": 2,
                     "MinPrice":0
                 }
@@ -464,6 +505,7 @@
             "Awards":[
                 {
                     "Item":"",
+                    "SetPrice":0,
                     "AwardType":"",
                     "Count":0,
                     "DisPrice":0,
@@ -473,7 +515,7 @@
 
         },
         {
-            "Name":"草莓蛋糕或原味鬆餅或焦糖布丁任選第二件打8折",
+            "Name":"草莓蛋糕或原味鬆餅或焦糖布丁任選兩件打8折",
             "Strategy": "POS點餐機.DiscountStrategy.Combo_Percentage_Discount",
             "Conditions":[
                 {
@@ -485,6 +527,7 @@
             "Awards":[
                 {
                     "Item":"",
+                    "SetPrice":0,
                     "AwardType":"",
                     "Count":0,
                     "DisPrice":0,
@@ -498,7 +541,7 @@
             "Strategy": "POS點餐機.DiscountStrategy.Combo_Percentage_Discount",
             "Conditions":[
                 {
-                    "Item": "宮保雞丁",
+                    "Item": "宮保雞丁飯",
                     "Count": 1,
                     "MinPrice":0
                 },
@@ -511,6 +554,7 @@
             "Awards":[
                 {
                     "Item":"",
+                    "SetPrice":0,
                     "AwardType":"",
                     "Count":0,
                     "DisPrice":0,
@@ -537,6 +581,7 @@
             "Awards":[
                 {
                     "Item":"",
+                    "SetPrice":0,
                     "AwardType":"",
                     "Count":0,
                     "DisPrice":0,
@@ -563,6 +608,7 @@
             "Awards":[
                 {
                     "Item":"",
+                    "SetPrice":0,
                     "AwardType":"",
                     "Count":0,
                     "DisPrice":0,
@@ -584,6 +630,7 @@
             "Awards":[
                 {
                     "Item":"",
+                    "SetPrice":0,
                     "AwardType":"",
                     "Count":0,
                     "DisPrice":0,
@@ -599,12 +646,13 @@
                 {
                     "Item": "",
                     "Count": 0,
-                    "MinPrice":0
+                    "MinPrice":1
                 }
             ],
             "Awards":[
                 {
                     "Item":"",
+                    "SetPrice":0,
                     "AwardType":"",
                     "Count":0,
                     "DisPrice":0,
@@ -613,7 +661,7 @@
             ]
 
         },
-        {
+         {
             "Name":"甜點滿599打75折",
             "Strategy": "POS點餐機.DiscountStrategy.Order_Total_Discount",
             "Conditions":[
@@ -626,10 +674,38 @@
             "Awards":[
                 {
                     "Item":"",
+                    "SetPrice":0,
                     "AwardType":"",
                     "Count":0,
                     "DisPrice":0,
                     "Off":-0.25
+                }
+            ]
+
+        },
+        {
+            "Name":"甜點滿399 主餐滿299 打8折",
+            "Strategy": "POS點餐機.DiscountStrategy.Order_Total_Discount",
+            "Conditions":[
+                {
+                    "Item": "草莓蛋糕,原味鬆餅,抹茶奶凍,焦糖布丁,草莓雪媚娘",
+                    "Count": 0,
+                    "MinPrice":399
+                },
+                {
+                    "Item": "雞肉飯,排骨飯,雞腿飯,糖醋小排飯,宮保雞丁飯",
+                    "Count": 0,
+                    "MinPrice":299
+                }
+            ],
+            "Awards":[
+                {
+                    "Item":"",
+                    "SetPrice":0,
+                    "AwardType":"",
+                    "Count":0,
+                    "DisPrice":0,
+                    "Off":-0.2
                 }
             ]
 
