@@ -1,0 +1,100 @@
+{
+  "Menus": [
+    {
+      "Title": "漢堡",
+      "Foods": [
+        { "Name": "經典牛肉堡", "Price": "89" },
+        { "Name": "酥脆雞腿堡", "Price": "95" },
+        { "Name": "雙層起司堡", "Price": "105" },
+        { "Name": "培根蛋堡", "Price": "99" },
+        { "Name": "炸蝦堡", "Price": "109" }
+      ]
+    },
+    {
+      "Title": "配餐",
+      "Foods": [
+        { "Name": "薯條", "Price": "45" },
+        { "Name": "雞塊(6塊)", "Price": "65" },
+        { "Name": "洋蔥圈", "Price": "55" },
+        { "Name": "炸雞翅(2隻)", "Price": "75" },
+        { "Name": "沙拉杯", "Price": "50" }
+      ]
+    },
+    {
+      "Title": "飲品",
+      "Foods": [
+        { "Name": "可樂", "Price": "40" },
+        { "Name": "雪碧", "Price": "40" },
+        { "Name": "冰紅茶", "Price": "35" },
+        { "Name": "美式咖啡", "Price": "55" },
+        { "Name": "奶昔", "Price": "60" }
+      ]
+    },
+    {
+      "Title": "甜點",
+      "Foods": [
+        { "Name": "布朗尼", "Price": "65" },
+        { "Name": "奶酪杯", "Price": "50" },
+        { "Name": "冰淇淋聖代", "Price": "70" },
+        { "Name": "起司蛋糕", "Price": "80" },
+        { "Name": "可麗露", "Price": "55" }
+      ]
+    }
+  ],
+  "Discounts": [
+    {
+      "Name": "經典套餐(任一漢堡+薯條+飲品)只要159元",
+      "Strategy": "POS點餐機.DiscountStrategy.Combo_Fixed_Price_Discount",
+      "Conditions": [
+        { "Item": "經典牛肉堡,酥脆雞腿堡,雙層起司堡,培根蛋堡,炸蝦堡", "Count": 1, "MinPrice": 0 },
+        { "Item": "薯條", "Count": 1, "MinPrice": 0 },
+        { "Item": "可樂,雪碧,冰紅茶", "Count": 1, "MinPrice": 0 }
+      ],
+      "Awards": [
+        { "Item": "", "SetPrice": 159, "AwardType": "", "Count": 1, "DisPrice": 0, "Off": 0 }
+      ]
+    },
+    {
+      "Name": "雙人分享餐(任選2漢堡+2飲品+1配餐)只要299元",
+      "Strategy": "POS點餐機.DiscountStrategy.Combo_Fixed_Price_Discount",
+      "Conditions": [
+        { "Item": "經典牛肉堡,酥脆雞腿堡,雙層起司堡,培根蛋堡,炸蝦堡", "Count": 2, "MinPrice": 0 },
+        { "Item": "可樂,雪碧,冰紅茶,美式咖啡,奶昔", "Count": 2, "MinPrice": 0 },
+        { "Item": "薯條,雞塊(6塊),洋蔥圈,炸雞翅(2隻),沙拉杯", "Count": 1, "MinPrice": 0 }
+      ],
+      "Awards": [
+        { "Item": "", "SetPrice": 299, "AwardType": "", "Count": 1, "DisPrice": 0, "Off": 0 }
+      ]
+    },
+    {
+      "Name": "任選3杯飲料只要100元",
+      "Strategy": "POS點餐機.DiscountStrategy.Combo_Fixed_Price_Discount",
+      "Conditions": [
+        { "Item": "可樂,雪碧,冰紅茶,美式咖啡,奶昔", "Count": 3, "MinPrice": 0 }
+      ],
+      "Awards": [
+        { "Item": "", "SetPrice": 100, "AwardType": "", "Count": 1, "DisPrice": 0, "Off": 0 }
+      ]
+    },
+    {
+      "Name": "甜點任選2件打8折",
+      "Strategy": "POS點餐機.DiscountStrategy.Combo_Percentage_Discount",
+      "Conditions": [
+        { "Item": "布朗尼,奶酪杯,冰淇淋聖代,起司蛋糕,可麗露", "Count": 2, "MinPrice": 0 }
+      ],
+      "Awards": [
+        { "Item": "", "SetPrice": 0, "AwardType": "", "Count": 0, "DisPrice": 0, "Off": -0.2 }
+      ]
+    },
+    {
+      "Name": "單筆消費滿499元打9折",
+      "Strategy": "POS點餐機.DiscountStrategy.Order_Total_Discount",
+      "Conditions": [
+        { "Item": "", "Count": 0, "MinPrice": 499 }
+      ],
+      "Awards": [
+        { "Item": "", "SetPrice": 0, "AwardType": "", "Count": 0, "DisPrice": 0, "Off": -0.1 }
+      ]
+    }
+  ]
+}

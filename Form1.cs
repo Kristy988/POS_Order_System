@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using POS點餐機.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,18 +35,13 @@ namespace POS點餐機
             //    TotalPrice = x.Sum(y => y.Foods.Sum(z => int.Parse(z.Price)))
             //}).ToList();
 
-
-
-
-
-
             for (int i = 0; i < menus.Length; i++)
             {
                 Label label = new Label();
                 FlowLayoutPanel flow = new FlowLayoutPanel();
                 label.Text = menus[i].Title;
                 flow.Controls.Add(label);
-                flow.Width = MenuContainer.Width/2-30;
+                flow.Width = MenuContainer.Width / 2 - 30;
                 flow.Height = MenuContainer.Height / 2 - 15;
 
                 for (int j = 0; j < menus[i].Foods.Length; j++)
@@ -59,7 +55,7 @@ namespace POS點餐機
                     productName.Width = foodFlow.Width / 2 + 60;
                     productName.Height = 35;
                     NumericUpDown numericUpDown = new NumericUpDown();
-                    numericUpDown.Width = foodFlow.Width/5;
+                    numericUpDown.Width = foodFlow.Width / 5;
                     numericUpDown.ValueChanged += Numericupdown_ValueChange;
                     productName.Tag = numericUpDown;
                     numericUpDown.Tag = productName;
@@ -85,14 +81,14 @@ namespace POS點餐機
 
         }
 
-        private void Numericupdown_ValueChange(object sender, EventArgs e)
+        private async void Numericupdown_ValueChange(object sender, EventArgs e)
         {
             NumericUpDown numericUpDown = (NumericUpDown)sender;
             CheckBox checkBox = (CheckBox)numericUpDown.Tag;
             checkBox.Checked = numericUpDown.Value > 0 ? true : false;
             Item item = new Item(checkBox.Text.Split('$')[0], checkBox.Text.Split('$')[1], numericUpDown.Value.ToString());
-            Order.Add((MenuSpec.Discount)comboBox1.SelectedValue, item);
-
+            OrderRequestModel orderRequestModel = new OrderRequestModel((MenuSpec.Discount)comboBox1.SelectedValue, item);
+            await Order.Add(orderRequestModel);
 
         }
 
@@ -102,25 +98,57 @@ namespace POS點餐機
         //    label1.Text = ShowPanel.checkoutPrice.ToString();
         //}
 
-        public void ShowPanelHandler(object sender, (FlowLayoutPanel, String) response)
+        public void ShowPanelHandler(object sender, RenderDataModel response)
         {
             //(FlowLayoutPanel panel, string lab) = response;
 
             flowLayoutPanel5.Controls.Clear();
-            flowLayoutPanel5.Controls.Add(response.Item1);
+            flowLayoutPanel5.Controls.Add(response.OrderDetail);
 
-            label1.Text = response.Item2.ToString();
+            label1.Text = response.CheckoutPrice.ToString();
+            if (response.SuggestionReason != "")
+            {
+                comboBox1.SelectedItem = AppData.Discounts.First(x => x.Name == response.SuggestionDiscount);
+                ReasonBox.Text = response.SuggestionReason;
+            }
 
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private async void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MenuSpec.Discount discountItem = (MenuSpec.Discount)comboBox1.SelectedValue;
-            Order.RefreshOrder(discountItem);
+            if (!comboBox1.Enabled)
+                return;
+            MenuSpec.Discount discountType = (MenuSpec.Discount)comboBox1.SelectedValue;
+            OrderRequestModel orderRequestModel = new OrderRequestModel(discountType);
+            await Order.RefreshOrder(orderRequestModel);
         }
 
         private void MenuContainer_Paint(object sender, PaintEventArgs e)
         {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void EnableAI_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox checkBox = (CheckBox)sender;
+            OrderRequestModel orderRequestModel = new OrderRequestModel(checkBox.Checked);
+            if (checkBox.Checked)
+            {
+                comboBox1.Enabled = false;
+            }
+            else
+            {
+                comboBox1.Enabled = true;
+                MenuSpec.Discount discountType = (MenuSpec.Discount)comboBox1.SelectedValue;
+                orderRequestModel.DiscountType = discountType;
+                ReasonBox.Text = "";
+            }
+            await Order.RefreshOrder(orderRequestModel);
 
         }
     }

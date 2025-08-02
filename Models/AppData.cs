@@ -14,27 +14,28 @@ namespace POS點餐機
         public static MenuSpec.Menu[] Menus;
         public static MenuSpec.Discount[] Discounts;
         public static Dictionary<String, int> Products;
+        public static string MenuContent = "";
 
-        
+
         static AppData()
         {
             string menuPath = ConfigurationManager.AppSettings["MenuPath"];
-            string menuContent = File.ReadAllText(menuPath);
+            MenuContent = File.ReadAllText(menuPath);
             //物件轉json字串 => 序列化 Serialize
             //json字串 轉物件 => 反序列化 DeSerialize
-            MenuSpec menuSpec = JsonConvert.DeserializeObject<MenuSpec>(menuContent);
+            MenuSpec menuSpec = JsonConvert.DeserializeObject<MenuSpec>(MenuContent);
 
-            Menus = menuSpec.Menus; 
+            Menus = menuSpec.Menus;
             Discounts = menuSpec.Discounts;
 
             Products = Menus.SelectMany(x => x.Foods.Select(y => new
             {
                 ProductName = y.Name,
                 Price = int.Parse(y.Price)
-            })).ToDictionary(x=> x.ProductName,x=>x.Price );
+            })).ToDictionary(x => x.ProductName, x => x.Price);
 
-            
+
         }
-         
+
     }
 }

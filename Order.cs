@@ -1,4 +1,5 @@
-﻿using System;
+﻿using POS點餐機.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,19 +11,19 @@ namespace POS點餐機
     internal class Order
     {
         public static List<Item> orders = new List<Item>();
-        public static void Add(MenuSpec.Discount discountType, Item item)
+        public static async Task Add(OrderRequestModel orderRequestModel)
         {
 
-            Item food = orders.FirstOrDefault(x => x.Name == item.Name);
+            Item food = orders.FirstOrDefault(x => x.Name == orderRequestModel.OrderItem.Name);
             if (food == null)
             {
-                orders.Add(item);
+                orders.Add(orderRequestModel.OrderItem);
             }
             else
             {
-                if (int.Parse(item.Count) != 0)
+                if (int.Parse(orderRequestModel.OrderItem.Count) != 0)
                 {
-                    food.Count = item.Count;
+                    food.Count = orderRequestModel.OrderItem.Count;
                 }
                 else
                 {
@@ -30,15 +31,15 @@ namespace POS點餐機
                 }
 
             }
-
-            Discount.DiscountOrder(discountType, orders);
+            orderRequestModel.Orders = orders;
+            await Discount.DiscountOrder(orderRequestModel);
 
         }
 
-        public static void RefreshOrder(MenuSpec.Discount discountType)
+        public static async Task RefreshOrder(OrderRequestModel orderRequestModel)
         {
-            Discount.DiscountOrder(discountType, orders);
-
+            orderRequestModel.Orders = orders;
+            await Discount.DiscountOrder(orderRequestModel);
         }
 
     }

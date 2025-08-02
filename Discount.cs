@@ -1,5 +1,7 @@
 ﻿using POS點餐機.DiscountFolder;
 using POS點餐機.DiscountStrategy;
+using POS點餐機.LLM;
+using POS點餐機.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,26 +12,13 @@ namespace POS點餐機
 {
     internal class Discount
     {
-        public static void DiscountOrder(MenuSpec.Discount discountType, List<Item> orders)
+        public static async Task DiscountOrder(OrderRequestModel orderRequestModel)
         {
-            orders.RemoveAll(x => x.Name.Contains("贈送") || x.Name.Contains("折扣"));
-            //雞肉飯買二送一
-            //排骨飯買三個210元
-            //雞腿飯加滷排骨150元
-            //草莓蛋糕買三個送焦糖布丁
-            //雞肉飯加鹽酥雞加烏龍奶茶加原味鬆餅折扣100
-            //宮保雞丁買三個打8折
-            //全場品項滿399打9折
-            //飲料任選五杯送一杯(單價最低品項)
-            //飲料均一價30元
-            //所有品項買二送一
-            //所有品項打折95折
+            orderRequestModel.Orders.RemoveAll(x => x.Name.Contains("贈送") || x.Name.Contains("折扣"));
 
-
-            //String discountTypeName = "POS點餐機.DiscountFolder." + discountType;
-            StrategyContext strategyContext = new StrategyContext(discountType, orders);
-            strategyContext.ContextInterface();
-            ShowPanel.Show(orders);
+            StrategyContext strategyContext = new StrategyContext(orderRequestModel);
+            AIResponse.Args agentResponse = await strategyContext.ContextInterface();
+            ShowPanel.Show(orderRequestModel.Orders, agentResponse);
 
         }
 

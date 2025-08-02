@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace POS點餐機
+namespace POS點餐機.LLM.Tools
 {
-    internal interface IStrategy
+    internal abstract class ATools
     {
-        void DiscountOrder();
+        public abstract AIResponse.Args Apply(AIResponse.Args args);
 
     }
 }

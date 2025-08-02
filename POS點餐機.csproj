@@ -54,7 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppData.cs" />
+    <Compile Include="Models\AppData.cs" />
     <Compile Include="Discount.cs" />
     <Compile Include="DiscountFolder\ADiscount.cs" />
     <Compile Include="DiscountFolder\DiscountFactory.cs" />
@@ -73,7 +73,6 @@
     <Compile Include="DiscountStrategy\Combo_Fixed_Price_Discount.cs" />
     <Compile Include="DiscountStrategy\Combo_Free_Item.cs" />
     <Compile Include="DiscountStrategy\Combo_Percentage_Discount.cs" />
-    <Compile Include="DiscountStrategy\IDAllocator.cs" />
     <Compile Include="DiscountStrategy\Order_Total_Discount.cs" />
     <Compile Include="DiscountStrategy\StrategyContext.cs" />
     <Compile Include="Extension.cs" />
@@ -83,9 +82,19 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="IStrategy.cs" />
-    <Compile Include="Item.cs" />
-    <Compile Include="MenuSpec.cs" />
+    <Compile Include="Models\Item.cs" />
+    <Compile Include="LLM\AIAgent.cs" />
+    <Compile Include="LLM\AIRequest.cs" />
+    <Compile Include="LLM\AIResponse.cs" />
+    <Compile Include="LLM\AIResult.cs" />
+    <Compile Include="LLM\Program.cs" />
+    <Compile Include="LLM\Tools\ATools.cs" />
+    <Compile Include="LLM\Tools\DiscountSuggestionTool\DiscountDeclaration.cs" />
+    <Compile Include="LLM\Tools\DiscountSuggestionTool\DiscountParameter.cs" />
+    <Compile Include="LLM\Tools\DiscountSuggestionTool\DiscountSuggestionTool.cs" />
+    <Compile Include="Models\MenuSpec.cs" />
+    <Compile Include="Models\OrderRequestModel.cs" />
+    <Compile Include="Models\RenderDataModel.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="OrderHandler.cs" />
     <Compile Include="Program.cs" />

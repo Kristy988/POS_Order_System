@@ -1,4 +1,6 @@
-﻿using System;
+﻿using POS點餐機.LLM;
+using POS點餐機.Models;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -10,7 +12,7 @@ namespace POS點餐機
 {
     internal class ShowPanel
     {
-        public static void Show(List<Item> orders)
+        public static void Show(List<Item> orders, AIResponse.Args args)
         {
             FlowLayoutPanel flows = new FlowLayoutPanel();
             flows.Height = 698;
@@ -26,7 +28,14 @@ namespace POS點餐機
             }
 
             string checkoutPrice = orders.Sum(x => int.Parse(x.SubTotal)).ToString();
-            OrderHandler.NotifyShowPanel((flows, checkoutPrice));
+            RenderDataModel renderDataModel = new RenderDataModel(flows, checkoutPrice);
+
+            if (args != null)
+            {
+                renderDataModel.SuggestionDiscount = args.discountName;
+                renderDataModel.SuggestionReason = args.reason;
+            }
+            OrderHandler.NotifyShowPanel(renderDataModel);
         }
 
         public static FlowLayoutPanel getFlow(string name, string count, string price, string total, int width)
